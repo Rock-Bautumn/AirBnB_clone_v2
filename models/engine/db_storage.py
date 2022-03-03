@@ -3,8 +3,21 @@
 import os
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-
-
+from models.base_model import Base, BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+classes = {
+    'User': User, 'Place': Place,
+    'State': State, 'City': City, 'Amenity': Amenity,
+    'Review': Review
+    }
+s_classes = {
+    'State': State, 'City': City
+}
 class DBStorage:
     """class for database storage engine"""
     __engine = None
@@ -19,45 +32,43 @@ class DBStorage:
     def __init__(self):
         """initializes the engine"""
         from models.base_model import Base
+        print(f'made f string: {self.dialect}+{self.driver}://\
+{self.user}:{self.password}@\
+{self.host}/{self.database}')
         self.__engine = create_engine(f'{self.dialect}+{self.driver}://\
-                                        {self.user}:{self.password}@\
-                                        {self.host}/{self.database}',
+{self.user}:{self.password}@\
+{self.host}/{self.database}',
                                       pool_pre_ping=True)
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
         if os.getenv("HBNB_ENV") == 'test':
             Base.metadata.drop_all(bind=self.__engine)
-            self.__session.commit()
 
     def all(self, cls=None):
         if cls:
-            objList = self.__session.query(cls).all()
+            objList = self.__session.query(classes[cls]).all()
             listDic = {}
             for obj in objList:
                 key = obj.__class__.__name__ + '.' + obj.id
                 listDic.update({key: obj})
             return listDic
         else:
-            from models.base_model import Base, BaseModel
-            from models.user import User
-            from models.place import Place
-            from models.state import State
-            from models.city import City
-            from models.amenity import Amenity
-            from models.review import Review
-            classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+
             objList = []
             listDic = {}
-            for key in classes.keys():
-                objList.append(self.__session.query(key).all())
-            for obj in objList:
-                key = obj.__class__.__name__ + '.' + obj.id
-                listDic.update({key: obj})
+            print(self.__session.query(State).all())
+            # for key, value in classes.items():
+            #     print(f"session query key is {self.__session.query(State)}")
+            #     print(f"appending in dict {self.__session.query(value).all()}")
+            #     objList.append(self.__session.query(key).all())
+            # for obj in objList:
+            #     key = obj.__class__.__name__ + '.' + obj.id
+            #     listDic.update({key: obj})
+            # objs = self.__session.query(State).all()
+            for key, value in s_classes.items():
+                objs = self.__session.query(value).all()
+                for item in objs:
+                    objList.append(item)
+            print(objList)
             return listDic
 
     def new(self, obj):
@@ -75,6 +86,13 @@ class DBStorage:
 
     def reload(self):
         """loads a session from database"""
+        from models.base_model import Base, BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
         from sqlalchemy.orm import scoped_session
         from models.base_model import Base, BaseModel
         Base.metadata.create_all(self.__engine)
