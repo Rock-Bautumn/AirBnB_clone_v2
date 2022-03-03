@@ -55,9 +55,7 @@ class DBStorage:
             listDic = {}
             for key in classes.keys():
                 objList.append(self.__session.query(key).all())
-            for obj in objList:
-                key = obj.__class__.__name__ + '.' + obj.id
-                listDic.update({key: obj})
+            
             return listDic
 
     def new(self, obj):
