@@ -3,13 +3,6 @@
 import os
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from models.base_model import Base, BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
 
 
 class DBStorage:
@@ -25,6 +18,7 @@ class DBStorage:
 
     def __init__(self):
         """initializes the engine"""
+        from models.base_model import Base
         self.__engine = create_engine(f'{self.dialect}+{self.driver}://\
                                         {self.user}:{self.password}@\
                                         {self.host}/{self.database}',
@@ -45,6 +39,13 @@ class DBStorage:
                 listDic.update({key: obj})
             return listDic
         else:
+            from models.base_model import Base, BaseModel
+            from models.user import User
+            from models.place import Place
+            from models.state import State
+            from models.city import City
+            from models.amenity import Amenity
+            from models.review import Review
             classes = {
                'BaseModel': BaseModel, 'User': User, 'Place': Place,
                'State': State, 'City': City, 'Amenity': Amenity,
@@ -75,6 +76,7 @@ class DBStorage:
     def reload(self):
         """loads a session from database"""
         from sqlalchemy.orm import scoped_session
+        from models.base_model import Base, BaseModel
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
