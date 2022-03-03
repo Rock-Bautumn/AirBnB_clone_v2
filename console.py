@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import re
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -73,7 +74,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -114,14 +115,36 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
+        argv = args.split()
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif argv[1] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        paramList = []
+        kwargs = {}
+        unmatchedList = []
+        for i in range(1, len(argv)):
+            paramList.append(argv[i].partition('='))
+        for paramater in paramList:
+            kwargs.update({paramater[0]: paramater[2]})
+        for key, value in kwargs.items():
+            if not re.search(r"^\"\S+\"$", value):
+                unmatchedList.append(str(key))
+        for x in unmatchedList:
+            kwargs.pop(x)
+        for name, matched in kwargs.items():
+            matched = matched[1:-1]
+            matched = matched.replace('_', ' ')
+            kwargs.update({name: matched})
+        if kwargs:
+            new_instance = HBNBCommand.classes[argv[0]](**kwargs)
+            storage.new(new_instance)
+        else:
+            new_instance = HBNBCommand.classes[argv[0]]()
+
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -197,17 +220,16 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, cls=None):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+        if cls:
+            if cls not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
             for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
+                if k.split('.')[0] == cls:
                     print_list.append(str(v))
         else:
             for k, v in storage._FileStorage__objects.items():
