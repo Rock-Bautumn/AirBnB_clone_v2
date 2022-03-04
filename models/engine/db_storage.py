@@ -41,6 +41,7 @@ class DBStorage:
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
+        """ returns a dictionary of all of the objects from the optional class"""
         if cls:
             objList = self.__session.query(classes[cls]).all()
             listDic = {}
