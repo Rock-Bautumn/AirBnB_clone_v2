@@ -34,6 +34,7 @@ class FileStorage:
         return FileStorage.__objects
 
     def delete(self, obj=None):
+        """ Deletes the object from the list of objects """
         for key, value in self.__objects.items():
             if obj == value:
                 delValue = key
