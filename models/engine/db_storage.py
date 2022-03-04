@@ -68,7 +68,16 @@ class DBStorage:
                 objs = self.__session.query(value).all()
                 for item in objs:
                     objList.append(item)
-            print(objList)
+            # print(objList)
+            # print("making dict")
+            for item in objList:
+                # print(str(item))
+                key = f"{item.__class__.__name__}.{item.id}"
+                listDic.update({key: item})
+            if '_sa_instance_state' in listDic: del listDic['_sa_instance_state']
+            print("-"*15)
+            print(f"the dict we made is {listDic}")
+            print("-"*15)
             return listDic
 
     def new(self, obj):

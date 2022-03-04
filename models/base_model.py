@@ -16,7 +16,7 @@ class BaseModel:
     updated_at = Column(DateTime(), nullable=False, default=created_at.default)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())
@@ -38,12 +38,11 @@ class BaseModel:
                 self.id = str(uuid.uuid4())
             self.__dict__.update(kwargs)
 
-
-
-
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split('.')[-1]).split('\'')[0]
+        newdict = self.__dict__
+        if '_sa_instance_state' in newdict: del newdict['_sa_instance_state']
         return '[{}] ({}) {}'.format(cls, self.id, self.__dict__)
 
     def save(self):
@@ -61,6 +60,7 @@ class BaseModel:
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
+        print(f"the keys in to_dict are {dictionary.keys}")
         if '_sa_instance_state' in dictionary.keys:
             dictionary.pop('_sa_instance_state')
         return dictionary
