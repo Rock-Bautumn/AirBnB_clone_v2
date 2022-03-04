@@ -25,10 +25,12 @@ class BaseModel:
 
         else:
             if 'updated_at' in kwargs.keys() and 'created_at' in kwargs.keys():
-                kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
-                kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                        '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['updated_at'] = datetime.strptime(
+                                       kwargs['updated_at'],
+                                       '%Y-%m-%dT%H:%M:%S.%f')
+                kwargs['created_at'] = datetime.strptime(
+                    kwargs['created_at'],
+                    '%Y-%m-%dT%H:%M:%S.%f')
             else:
                 self.created_at = datetime.utcnow()
                 self.updated_at = self.created_at

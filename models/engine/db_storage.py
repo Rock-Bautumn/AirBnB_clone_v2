@@ -18,6 +18,8 @@ classes = {
 s_classes = {
     'State': State, 'City': City
 }
+
+
 class DBStorage:
     """class for database storage engine"""
     __engine = None
@@ -41,7 +43,9 @@ class DBStorage:
             Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
-        """ returns a dictionary of all of the objects from the optional class"""
+        """
+        returns a dictionary of all of the objects from the optional class
+        """
         if cls:
             objList = self.__session.query(classes[cls]).all()
             listDic = {}
@@ -53,15 +57,6 @@ class DBStorage:
 
             objList = []
             listDic = {}
-            # print(self.__session.query(State).all())
-            # for key, value in classes.items():
-            #     print(f"session query key is {self.__session.query(State)}")
-            #     print(f"appending in dict {self.__session.query(value).all()}")
-            #     objList.append(self.__session.query(key).all())
-            # for obj in objList:
-            #     key = obj.__class__.__name__ + '.' + obj.id
-            #     listDic.update({key: obj})
-            # objs = self.__session.query(State).all()
             for key, value in s_classes.items():
                 objs = self.__session.query(value).all()
                 for item in objs:
@@ -72,10 +67,7 @@ class DBStorage:
                 # print(str(item))
                 key = f"{item.__class__.__name__}.{item.id}"
                 listDic.update({key: item})
-            # if '_sa_instance_state' in listDic: del listDic['_sa_instance_state']
-            # print("-"*15)
-            # print(f"the dict we made is {listDic}")
-            # print("-"*15)
+
             return listDic
 
     def new(self, obj):
