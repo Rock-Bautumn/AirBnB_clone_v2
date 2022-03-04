@@ -1,7 +1,21 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
-
+from models.base_model import Base, BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+classes = {
+    'User': User, 'Place': Place,
+    'State': State, 'City': City, 'Amenity': Amenity,
+    'Review': Review
+    }
+s_classes = {
+    'State': State, 'City': City
+}
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
@@ -14,7 +28,7 @@ class FileStorage:
         if cls:
             listDic = {}
             for key, value in FileStorage.__objects.items():
-                if cls == type(value):
+                if classes[cls] == type(value):
                     listDic.update({key: value})
             return listDic
         return FileStorage.__objects
