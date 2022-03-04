@@ -32,9 +32,6 @@ class DBStorage:
     def __init__(self):
         """initializes the engine"""
         from models.base_model import Base
-        print(f'made f string: {self.dialect}+{self.driver}://\
-{self.user}:{self.password}@\
-{self.host}/{self.database}')
         self.__engine = create_engine(f'{self.dialect}+{self.driver}://\
 {self.user}:{self.password}@\
 {self.host}/{self.database}',
@@ -55,7 +52,7 @@ class DBStorage:
 
             objList = []
             listDic = {}
-            print(self.__session.query(State).all())
+            # print(self.__session.query(State).all())
             # for key, value in classes.items():
             #     print(f"session query key is {self.__session.query(State)}")
             #     print(f"appending in dict {self.__session.query(value).all()}")
@@ -75,9 +72,9 @@ class DBStorage:
                 key = f"{item.__class__.__name__}.{item.id}"
                 listDic.update({key: item})
             if '_sa_instance_state' in listDic: del listDic['_sa_instance_state']
-            print("-"*15)
-            print(f"the dict we made is {listDic}")
-            print("-"*15)
+            # print("-"*15)
+            # print(f"the dict we made is {listDic}")
+            # print("-"*15)
             return listDic
 
     def new(self, obj):
