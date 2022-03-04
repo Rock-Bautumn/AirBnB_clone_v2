@@ -71,7 +71,7 @@ class DBStorage:
                 # print(str(item))
                 key = f"{item.__class__.__name__}.{item.id}"
                 listDic.update({key: item})
-            if '_sa_instance_state' in listDic: del listDic['_sa_instance_state']
+            # if '_sa_instance_state' in listDic: del listDic['_sa_instance_state']
             # print("-"*15)
             # print(f"the dict we made is {listDic}")
             # print("-"*15)
