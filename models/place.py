@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from msilib import Table
+from AirBnB_clone_v2.models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
@@ -26,16 +27,6 @@ class Place(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", backref='place',
                               cascade='all, delete-orphan')
-    else:
-        @property
-        def reviews(self):
-            """Attribute for FileStorage"""
-            reviewList = []
-            for obj in models.storage.all(Review).values():
-                if obj.place_id == self.id:
-                    reviewList.append(obj)
-            return reviewList
-
         place_amenity = Table('place_amenity',
                               Column('place_id', String(60),
                                      ForeignKey('places.id'), nullable=False),
@@ -43,3 +34,30 @@ class Place(BaseModel, Base):
                                      ForeignKey('amenities.id'),
                                      nullable=False),
                               )
+        amenities = relationship("Amenities",
+                                 secondary="place_amenities", viewonly=False)
+                                
+    else:
+        @property
+        def reviews(self):
+            """Property Getter for FileStorage"""
+            reviewList = []
+            for obj in models.storage.all(Review).values():
+                if obj.place_id == self.id:
+                    reviewList.append(obj)
+            return reviewList
+        
+        @property
+        def amenities(self):
+            """Amenity getter for FileStorage"""
+            amenitiesList = []
+            for obj in models.strorage.all(Amenity).values():
+                if obj.place_id == self.id:
+                    amenitiesList.append(obj)
+                return amenitiesList
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            """Amenity setter for File Storage"""
+            if type(obj) == Amenity:
+                self.amenity_ids.append(obj)
