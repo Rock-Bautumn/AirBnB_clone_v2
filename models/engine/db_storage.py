@@ -13,10 +13,11 @@ from models.review import Review
 classes = {
     'User': User, 'Place': Place,
     'State': State, 'City': City, 'Amenity': Amenity,
-    'Review': Review
+    'Review': Review, 
     }
 s_classes = {
-    'State': State, 'City': City
+    'State': State, 'City': City, 'User': User,
+    'Place': Place,
 }
 
 

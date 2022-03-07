@@ -131,13 +131,14 @@ class HBNBCommand(cmd.Cmd):
         for paramater in paramList:
             kwargs.update({paramater[0]: paramater[2]})
         for key, value in kwargs.items():
-            if not re.search(r"^\"\S+\"$", value):
+            if not re.search(r"^(\-?\d*\.?\d*|\"\S+\")$", str(value)):
                 unmatchedList.append(str(key))
         for x in unmatchedList:
             kwargs.pop(x)
         for name, matched in kwargs.items():
-            matched = matched[1:-1]
-            matched = matched.replace('_', ' ')
+            if re.search(r"^\"\S+\"$", matched):
+                matched = matched[1:-1]
+                matched = matched.replace('_', ' ')
             kwargs.update({name: matched})
         if kwargs:
             new_instance = HBNBCommand.classes[argv[0]](**kwargs)
