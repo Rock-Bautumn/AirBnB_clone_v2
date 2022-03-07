@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from models.review import Review
 from os import getenv
-from models import storage
+import models
 
 
 class Place(BaseModel, Base):
@@ -30,7 +30,7 @@ class Place(BaseModel, Base):
         def reviews(self):
             """Attribute for FileStorage"""
             reviewList = []
-            for obj in storage.all(Review).values():
+            for obj in models.storage.all(Review).values():
                 if obj.place_id == self.id:
                     reviewList.append(obj)
             return reviewList
