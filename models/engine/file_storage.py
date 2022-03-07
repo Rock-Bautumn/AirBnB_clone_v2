@@ -27,10 +27,18 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if cls:
             listDic = {}
-            for key, value in FileStorage.__objects.items():
-                if classes[cls] == type(value):
-                    listDic.update({key: value})
-            return listDic
+            if type(cls) == str:
+                for key, value in FileStorage.__objects.items():
+                    if classes[cls] == type(value):
+                        listDic.update({key: value})
+                return listDic
+            else:
+                for key, value in classes.items():
+                    if cls == value or cls.__name__ == key:
+                        for key, value in FileStorage.__objects.items():
+                            if cls == type(value):
+                                listDic.update({key: value})
+                return listDic
         return FileStorage.__objects
 
     def delete(self, obj=None):
