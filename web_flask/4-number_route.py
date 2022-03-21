@@ -25,7 +25,9 @@ def hbnb_route():
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def show_post(n):
-    # show the post with the given id, the id is an integer
+    """
+    show the post with the given id, the id is an integer
+    """
     return f'{n} is a number'
 
 
@@ -41,6 +43,9 @@ def c_is_fun_but_python_not_so_much_route(text):
 # @app.route("/python/")
 @app.route('/python/<text>', strict_slashes=False)
 def python_route(text='is cool'):
+    """
+    python app route
+    """
     return f"Python {text.replace('_', ' ')}"
 
 if __name__ == '__main__':
