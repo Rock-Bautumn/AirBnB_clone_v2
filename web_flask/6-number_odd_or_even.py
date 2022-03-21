@@ -51,9 +51,11 @@ def c_is_fun_but_python_not_so_much_route(text):
 
 
 @app.route("/python", strict_slashes=False)
-# @app.route("/python/")
 @app.route('/python/<text>', strict_slashes=False)
 def python_route(text='is cool'):
+    """
+    python route
+    """
     return "Python {}".format(text.replace('_', ' '))
 
 if __name__ == '__main__':
