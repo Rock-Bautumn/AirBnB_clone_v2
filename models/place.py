@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
-from msilib import Table
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Table
 from sqlalchemy.orm import relationship
 from models.review import Review
 from os import getenv
@@ -27,7 +26,7 @@ class Place(BaseModel, Base):
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", backref='place',
                               cascade='all, delete-orphan')
-        place_amenity = Table('place_amenity',
+        place_amenity = Table('place_amenity', Base.metadata,
                               Column('place_id', String(60),
                                      ForeignKey('places.id'), nullable=False),
                               Column('amenity_id', String(60),
