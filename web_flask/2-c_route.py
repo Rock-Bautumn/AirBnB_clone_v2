@@ -6,6 +6,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/", strict_slashes=False)
 def hello_world():
     """
@@ -13,12 +14,14 @@ def hello_world():
     """
     return "Hello HBNB!"
 
+
 @app.route("/hbnb", strict_slashes=False)
 def hbnb_route():
     """
     hello world for hbnb route
     """
     return "HBNB"
+
 
 @app.route("/c/<text>", strict_slashes=False)
 def c_is_fun_but_python_not_so_much_route(text):

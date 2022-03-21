@@ -6,12 +6,14 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/", strict_slashes=False)
 def hello_world():
     """
     basic hello world
     """
     return "Hello HBNB!"
+
 
 @app.route("/hbnb", strict_slashes=False)
 def hbnb_route():
@@ -20,10 +22,12 @@ def hbnb_route():
     """
     return "HBNB"
 
+
 @app.route('/number/<int:n>', strict_slashes=False)
 def show_post(n):
     # show the post with the given id, the id is an integer
     return f'{n} is a number'
+
 
 @app.route("/c/<text>", strict_slashes=False)
 def c_is_fun_but_python_not_so_much_route(text):
@@ -31,6 +35,7 @@ def c_is_fun_but_python_not_so_much_route(text):
     Using a variable in the route name
     """
     return "C {}".format(text.replace("_", " "))
+
 
 @app.route("/python", strict_slashes=False)
 # @app.route("/python/")
