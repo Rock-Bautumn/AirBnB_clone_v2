@@ -37,7 +37,7 @@ def python_route(text='is cool'):
     """
     python route
     """
-    return f"Python {text.replace('_', ' ')}"
+    return "Python {}".format(text.replace('_', ' '))
 
 if __name__ == '__main__':
     """ Start the app """
