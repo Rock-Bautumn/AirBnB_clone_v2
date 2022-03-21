@@ -48,7 +48,7 @@ class DBStorage:
         returns a dictionary of all of the objects from the optional class
         """
         if cls:
-            objList = self.__session.query(classes[cls]).all()
+            objList = self.__session.query(cls).all()
             listDic = {}
             for obj in objList:
                 key = obj.__class__.__name__ + '.' + obj.id
