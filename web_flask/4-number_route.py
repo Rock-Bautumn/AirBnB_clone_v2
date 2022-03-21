@@ -28,7 +28,7 @@ def show_post(n):
     """
     show the post with the given id, the id is an integer
     """
-    return f'{n} is a number'
+    return "{} is a number".format(n)
 
 
 @app.route("/c/<text>", strict_slashes=False)
