@@ -66,7 +66,7 @@ class DBStorage:
             # print("making dict")
             for item in objList:
                 # print(str(item))
-                key = f"{item.__class__.__name__}.{item.id}"
+                key = "{}.{}".format(item.__class__.__name__, item.id)
                 listDic.update({key: item})
 
             return listDic
