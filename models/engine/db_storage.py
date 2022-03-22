@@ -13,7 +13,7 @@ from models.review import Review
 classes = {
     'User': User, 'Place': Place,
     'State': State, 'City': City, 'Amenity': Amenity,
-    'Review': Review, 
+    'Review': Review,
     }
 s_classes = {
     'State': State, 'City': City, 'User': User,
@@ -58,7 +58,7 @@ class DBStorage:
 
             objList = []
             listDic = {}
-            for key, value in s_classes.items():
+            for key, value in classes.items():
                 objs = self.__session.query(value).all()
                 for item in objs:
                     objList.append(item)

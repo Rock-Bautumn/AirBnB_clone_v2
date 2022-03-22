@@ -25,7 +25,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     if getenv('HBNB_TYPE_STORAGE') == 'db':
         reviews = relationship("Review", backref='place',
-                              cascade='all, delete-orphan')
+                               cascade='all, delete-orphan')
         place_amenity = Table('place_amenity', Base.metadata,
                               Column('place_id', String(60),
                                      ForeignKey('places.id'), nullable=False),
@@ -35,7 +35,7 @@ class Place(BaseModel, Base):
                               )
         amenities = relationship("Amenities",
                                  secondary="place_amenities", viewonly=False)
-                                
+
     else:
         @property
         def reviews(self):
@@ -45,7 +45,7 @@ class Place(BaseModel, Base):
                 if obj.place_id == self.id:
                     reviewList.append(obj)
             return reviewList
-        
+
         @property
         def amenities(self):
             """Amenity getter for FileStorage"""
