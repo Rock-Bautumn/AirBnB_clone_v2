@@ -100,3 +100,8 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session
+
+    def close(self):
+        """closes an instance by calling remove on the __session of self"""
+        self.__session.remove()
+
