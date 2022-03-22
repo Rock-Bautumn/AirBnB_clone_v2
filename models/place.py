@@ -33,8 +33,8 @@ class Place(BaseModel, Base):
                                      ForeignKey('amenities.id'),
                                      nullable=False),
                               )
-        amenities = relationship("Amenities",
-                                 secondary="place_amenities", viewonly=False)
+        amenities = relationship("Amenity",
+                                 secondary="place_amenity", viewonly=False)
 
     else:
         @property
