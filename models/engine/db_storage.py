@@ -86,7 +86,6 @@ class DBStorage:
 
     def reload(self):
         """loads a session from database"""
-        from models.base_model import Base, BaseModel
         from models.user import User
         from models.place import Place
         from models.state import State
@@ -94,7 +93,7 @@ class DBStorage:
         from models.amenity import Amenity
         from models.review import Review
         from sqlalchemy.orm import scoped_session
-        from models.base_model import Base, BaseModel
+        # from models.base_model import Base, BaseModel
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
@@ -103,5 +102,4 @@ class DBStorage:
 
     def close(self):
         """closes an instance by calling remove on the __session of self"""
-        # self.__session.close()
-        pass
+        self.__session.remove()
